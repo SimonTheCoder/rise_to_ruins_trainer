@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="28">
+  <Forms>
+    <mainForm_1 Class="TCEForm" Encoding="Ascii85">jg!xg):ZUm@M@L:wn%]g1tcWA7fwJ,Ss{:YZPbND-QB8/Sm3g9lSyMWu[N1_=Fn)]z(ml}A-M7sIBA-a1td-xkL}aKd1ms^*HHW_,[PL}c,7ab7h@*R.PT0{5d[j4;h.$@:Aks-:%(jOv!mB8h%ZBP-;?8/NWy6S!Gs7vlA%dTs6Z{PBEZpXjiw{K*D6L5KJc}@5umcvYi-u0,(Oh3CctWD0C^,Q8nWdHb,K3sFt-^*9z^#M7Ft8]j[=ekM*56he]p1,aWkiVzNP*Hm9!_7G7*ySJ0})sXOBG:cPpH(G3JWPVG-jEZRb?##j6t//W9z.iji=_/73d$:2nbXh_nNPfqGyc[6}dh6n0Wx3g52@,r/Mu=.fzPj%PamslN9L$1s(xrefouS8HT%YxH$zaXaD610fJgfcg(,?$G+9#nb+3kGAq}+=b/sfUVlU#YH;5mF;8bKjv9crFW%KZN$8VZ8.%$3-Fuy3:nT(HM4vk*-rT86yB@j*Nt_aoU1,:nx-]s!622A)atnYfWIYCgy,D.CV8c#ot*yLpa?Hf8}I(SUOp%{=+2[R-]Zj5,Mn}--xT0WbsmimMX5jOrT0rWBmxB}@_B;eDk}J?1t3fj1Oa#wsq}tq9DUqkpz(}WdUQ5Cb4TwFYI!%TnioyLuQaHo^zNL0Jfpg$^Q;</mainForm_1>
+  </Forms>
+  <CheatEntries/>
+  <UserdefinedSymbols>
+    <SymbolEntry>
+      <Name>bla</Name>
+      <Address>013D0000</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>cmd</Name>
+      <Address>013D0400</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arg0</Name>
+      <Address>013D0410</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arg1</Name>
+      <Address>013D0510</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>arg2</Name>
+      <Address>013D0610</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>result</Name>
+      <Address>013D0710</Address>
+    </SymbolEntry>
+    <SymbolEntry>
+      <Name>pipename</Name>
+      <Address>013D0720</Address>
+    </SymbolEntry>
+  </UserdefinedSymbols>
+  <LuaScript>-- Create by 51m0n
+-- Need Cheat engine version &gt;= 6.6
+-- usage:
+-- [Memory view] -&gt; [Tools] -&gt; [Lua Engine] , paste this script to text box besides
+-- the Execute button. Then press Excute. Enjoy.
+
+-- refill influence interval in ms:
+refill_interval = 500;
+
+
+-- #############################################################################
+---[[
+orig_print = print
+function   fake_print(...)
+    --disable print function for the EVENTCMD_METHODUNLOAD log will take focus from the game.
+    orig_print();
+    if select("#",...)==1 and "EVENTCMD_METHODUNLOAD" == select(1,...) then
+       return
+    end
+
+    orig_print(...);
+end;
+print = fake_print;
+--]]
+local pid = nil;
+
+for k,v in pairs(getProcesslist())
+do
+  if string.find(v,'javaw') then
+     --print(k..":"..v);
+     for id,mod in pairs(enumModules(k)) do
+         --Rise to Ruins
+         if(string.find(mod.PathToFile,"Rise to Ruins")) then
+             --print("Rise to Ruins Found!!!!")
+             pid = k
+             break;
+
+         end
+     end
+  end
+end
+
+if pid==nill then
+   showMessage("Game process not Found!");
+   closeCE();
+else
+    --print("open proc:"..pid);
+    openProcess(pid);
+    --print("process opend:"..getOpenedProcessID())
+    mainForm_1.GameStatus.Caption="process opend, id:"..getOpenedProcessID();
+end
+
+javaInjectAgent();
+
+function find_influence_obj()
+         local class_InfluenceModule = {};
+         class_InfluenceModule.jclass = java_findClass("Lrtr/influence/InfluenceModule;");
+         local objs = java_findAllObjectsFromClass(class_InfluenceModule.jclass);
+         --print("objs found:"..#objs);
+         --print(type(objs[1]));
+         return objs[1]
+end
+
+function refill_influence(obj)
+         local influenceAmountMax = java_getField(obj,0x2f2,"I");
+         local influenceAmount = java_getField(obj,0x2e2,"I");
+         --print("max influence:"..influenceAmountMax)
+         mainForm_1.MaxInf.Caption = "max influence:"..influenceAmountMax
+         mainForm_1.CurInf.Caption = "Current influence:"..influenceAmount
+         if influenceAmount&lt;influenceAmountMax
+         then
+             java_setField(obj,0x2e2,"I",influenceAmountMax);
+         end
+end
+
+local influence_timer = createTimer();
+influence_timer.Enabled = false;
+influence_timer.Interval = refill_interval;
+obj_inf = find_influence_obj();
+function onTimer(sender)
+--if obj is valid
+     refill_influence(obj_inf);
+end
+influence_timer.OnTimer = onTimer;
+--influence_timer.Enabled = true;
+
+mainForm_1.Caption = "Rise to Ruins Trainer by SimonTheCoder";
+mainForm_1.show()
+
+function LockClick(sender)
+    --print("event1 comes");
+    if influence_timer.Enabled == true then
+        influence_timer.Enabled = false
+        sender.Caption = "Lock: False"
+    else
+        influence_timer.Enabled = true
+        sender.Caption = "Lock: True"
+    end
+end
+
+function FormClose(sender)
+    influence_timer.Enabled = false
+    local mainForm = getMainForm()
+    --print(mainForm.ClassName)
+    if string.find(mainForm.ClassName,"TMainForm" ) then
+        closeCE();
+    --[[
+    javapipe.lock();
+    javapipe.writeByte(JAVACMD_STOPCODECALLBACKS)
+  --the javapipe will now be frozen until a javaeventpipe makes an connection
+  --createNativeThread(JavaEventListener);
+    javapipe.unlock();
+    --]]
+    else
+        closeCE();
+    end
+    print = orig_print;
+return caHide --Possible options: caHide, caFree, caMinimize, caNone
+end
+function SuperVillagersButtonClick(sender)
+  local vclass = java_findClass("Lrtr/mobs/VillagerAdult;");
+  local objs = java_findAllObjectsFromClass(vclass);
+  --print(#objs)
+  for k,v in pairs(objs) do
+      --print(string.format("%x",java_getField(v,0xf42,"Ljava/lang/String;")))
+      --local stringp = java_getField(v,0xf42,"Ljava/lang/String;")
+      local stringp = java_getField(v,0x212,"F")
+      -- SUPER SPEED!!!
+      java_setField(v,0x212,"F",9999.0)
+      stringp = java_getField(v,0x212,"F")
+      --print(stringp)
+      --print(string.format("%x", readQword(stringp)))
+  end
+end
+
+function SuperJobGolem
+  local vclass = java_findClass("Lrtr/mobs/jobs/MobJobLaborGolem;");
+  local objs = java_findAllObjectsFromClass(vclass);
+  --print(#objs)
+  for k,v in pairs(objs) do
+      --print(string.format("%x",java_getField(v,0xf42,"Ljava/lang/String;")))
+      --local stringp = java_getField(v,0xf42,"Ljava/lang/String;")
+      local stringp = java_getField(v,0x212,"F")
+      -- SUPER SPEED!!!
+      java_setField(v,0x212,"F",9999.0)
+      stringp = java_getField(v,0x212,"F")
+      --print(stringp)
+      --print(string.format("%x", readQword(stringp)))
+  end
+end
+</LuaScript>
+</CheatTable>
