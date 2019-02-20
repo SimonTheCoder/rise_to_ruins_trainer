@@ -9,9 +9,9 @@ https://github.com/SimonTheCoder/rise_to_ruins_trainer/releases
 
 Feature:
 
-GUI added.
-Script saved as .CT file.
-Villagers now can have super speed. And never back to normal, BE CAREFUL!
+* GUI added.
+* Script saved as .CT file.
+* Villagers now can have super speed. And never back to normal, BE CAREFUL!
 
 
 
