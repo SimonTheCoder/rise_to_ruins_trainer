@@ -7,31 +7,31 @@
   <UserdefinedSymbols>
     <SymbolEntry>
       <Name>bla</Name>
-      <Address>013D0000</Address>
+      <Address>00BE0000</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>cmd</Name>
-      <Address>013D0400</Address>
+      <Address>00BE0400</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arg0</Name>
-      <Address>013D0410</Address>
+      <Address>00BE0410</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arg1</Name>
-      <Address>013D0510</Address>
+      <Address>00BE0510</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arg2</Name>
-      <Address>013D0610</Address>
+      <Address>00BE0610</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>result</Name>
-      <Address>013D0710</Address>
+      <Address>00BE0710</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>pipename</Name>
-      <Address>013D0720</Address>
+      <Address>00BE0720</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <LuaScript>-- Create by 51m0n
@@ -87,6 +87,16 @@ else
 end
 
 javaInjectAgent();
+
+function get_field_id_by_field_name(vclass, field_name)
+    local all_fields = java_getClassFields(vclass);
+    for k,v in pairs(all_fields) do
+        if(field_name == v.name) then
+            return v.jfieldid
+        end
+    end
+    return 0;
+end
 
 function find_influence_obj()
          local class_InfluenceModule = {};
@@ -156,19 +166,22 @@ end
 function SuperVillagersButtonClick(sender)
   local vclass = java_findClass("Lrtr/mobs/VillagerAdult;");
   local objs = java_findAllObjectsFromClass(vclass);
+  local base_vclass = java_findClass("Lrtr/mobs/MobBase;");
+  --local all_fields = java_getClassFields(base_vclass);
   --print(#objs)
+  local baseVelocity_id = get_field_id_by_field_name(base_vclass,"baseVelocity");
   for k,v in pairs(objs) do
       --print(string.format("%x",java_getField(v,0xf42,"Ljava/lang/String;")))
       --local stringp = java_getField(v,0xf42,"Ljava/lang/String;")
-      local stringp = java_getField(v,0x212,"F")
+      local stringp = java_getField(v,baseVelocity_id,"F")
       -- SUPER SPEED!!!
-      java_setField(v,0x212,"F",9999.0)
-      stringp = java_getField(v,0x212,"F")
+      java_setField(v,baseVelocity_id,"F",9999.0)
+      stringp = java_getField(v,baseVelocity_id,"F")
       --print(stringp)
       --print(string.format("%x", readQword(stringp)))
   end
 end
-
+--[[
 function SuperJobGolem
   local vclass = java_findClass("Lrtr/mobs/jobs/MobJobLaborGolem;");
   local objs = java_findAllObjectsFromClass(vclass);
@@ -184,5 +197,6 @@ function SuperJobGolem
       --print(string.format("%x", readQword(stringp)))
   end
 end
+--]]
 </LuaScript>
 </CheatTable>
