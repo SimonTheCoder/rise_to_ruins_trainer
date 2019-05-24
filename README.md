@@ -11,7 +11,7 @@ Feature:
 
 * GUI added.
 * Script saved as .CT file.
-* Villagers now can have super speed. And never back to normal, BE CAREFUL!
+* Villagers now can have super speed, super . And never back to normal, BE CAREFUL!
 
 
 
