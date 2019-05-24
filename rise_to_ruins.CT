@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheatTable CheatEngineTableVersion="28">
   <Forms>
-    <mainForm_1 Class="TCEForm" Encoding="Ascii85">jg!xg):ZUm@M@L:wn%]g1tcWA7fwJ,Ss{:YZPbND-QB8/Sm3g9lSyMWu[N1_=Fn)]z(ml}A-M7sIBA-a1td-xkL}aKd1ms^*HHW_,[PL}c,7ab7h@*R.PT0{5d[j4;h.$@:Aks-:%(jOv!mB8h%ZBP-;?8/NWy6S!Gs7vlA%dTs6Z{PBEZpXjiw{K*D6L5KJc}@5umcvYi-u0,(Oh3CctWD0C^,Q8nWdHb,K3sFt-^*9z^#M7Ft8]j[=ekM*56he]p1,aWkiVzNP*Hm9!_7G7*ySJ0})sXOBG:cPpH(G3JWPVG-jEZRb?##j6t//W9z.iji=_/73d$:2nbXh_nNPfqGyc[6}dh6n0Wx3g52@,r/Mu=.fzPj%PamslN9L$1s(xrefouS8HT%YxH$zaXaD610fJgfcg(,?$G+9#nb+3kGAq}+=b/sfUVlU#YH;5mF;8bKjv9crFW%KZN$8VZ8.%$3-Fuy3:nT(HM4vk*-rT86yB@j*Nt_aoU1,:nx-]s!622A)atnYfWIYCgy,D.CV8c#ot*yLpa?Hf8}I(SUOp%{=+2[R-]Zj5,Mn}--xT0WbsmimMX5jOrT0rWBmxB}@_B;eDk}J?1t3fj1Oa#wsq}tq9DUqkpz(}WdUQ5Cb4TwFYI!%TnioyLuQaHo^zNL0Jfpg$^Q;</mainForm_1>
+    <mainForm_1 Class="TCEForm" Encoding="Ascii85">jg#GO):Zgr@Ff/-EfSN.mxP3O!xhj]#00rwjXD[WwyKR7a5K4ylUPmc$aZMQ4KKh2?5D6@!4/E8/EAbdAaRxBWBdRA]J9uVwqf^[qkYHsMn^xoI}l}J3?*Br8;2_rBeVG$.W!cY8]Jh[ZuiW[ISxf*-=AJJ/@ogFd?#iv0YSmEz:Q+zNfE?r^1VJ=Mv0#wkA^eKy%ZxNv_eYu*@caWODRWAy97_-@.trf$Ha$xF?)%%adDU}.Uza)l6MT{C}Z}W3ipRm.aa/j[W6ePyP.]8B1F#Jem{,^Ddvv?n*Pd)oe5-.%cCh{Eo1A_Jb_lY5-BI@QO)G?xAw7OZL@!f6}H7*3q%6sK0Da_r;/8pt$V,(;sGp-wC,uLx_I1p=VVRJLo*$I!Poj]y,H1!Kwq}7x{7r]AkG2J5eXjx9J,)Si;HGt9$o3-);PAikgmGF#Z?o9;0aDXPdTWb?:hBy#xz+Cj,dZdfx?.L030lwc9}aUqePbz5zMPYEg#O$m}4[_7*DzX3:1JB;CK89v9}x*VT;4GC$AK:rzp-VibPY}P/Mg8yr))t^!LYFZ81#a(tV+[3-F}rjMj($*Spf5^nAe]2T=)SatW5w3S?AB03-lK5efv5:{THL?Nt6yCZp-e.pynqAHUygsBSooAf2MH*{W634GGUxMs}}i1p</mainForm_1>
   </Forms>
   <CheatEntries/>
   <UserdefinedSymbols>
@@ -170,11 +170,20 @@ function SuperVillagersButtonClick(sender)
   --local all_fields = java_getClassFields(base_vclass);
   --print(#objs)
   local baseVelocity_id = get_field_id_by_field_name(base_vclass,"baseVelocity");
+  local strength_id = get_field_id_by_field_name(base_vclass,"strength");
+  local dexterity_id = get_field_id_by_field_name(base_vclass,"dexterity");
+  local intelligence_id = get_field_id_by_field_name(base_vclass,"intelligence");
+  local lifeExpectancy_id = get_field_id_by_field_name(base_vclass,"lifeExpectancy");
   for k,v in pairs(objs) do
       --print(string.format("%x",java_getField(v,0xf42,"Ljava/lang/String;")))
       --local stringp = java_getField(v,0xf42,"Ljava/lang/String;")
       local stringp = java_getField(v,baseVelocity_id,"F")
-      -- SUPER SPEED!!!
+      -- SUPER VILLAGERS!!!
+
+      java_setField(v,strength_id,"I",9999)
+      java_setField(v,dexterity_id,"I",9999)
+      java_setField(v,intelligence_id,"I",9999)
+      java_setField(v,lifeExpectancy_id,"I",9999)
       java_setField(v,baseVelocity_id,"F",9999.0)
       stringp = java_getField(v,baseVelocity_id,"F")
       --print(stringp)
