@@ -1,37 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CheatTable CheatEngineTableVersion="28">
   <Forms>
-    <mainForm_1 Class="TCEForm" Encoding="Ascii85">jg#GO):Zgr@Ff/-EfSN.mxP3O!xhj]#00rwjXD[WwyKR7a5K4ylUPmc$aZMQ4KKh2?5D6@!4/E8/EAbdAaRxBWBdRA]J9uVwqf^[qkYHsMn^xoI}l}J3?*Br8;2_rBeVG$.W!cY8]Jh[ZuiW[ISxf*-=AJJ/@ogFd?#iv0YSmEz:Q+zNfE?r^1VJ=Mv0#wkA^eKy%ZxNv_eYu*@caWODRWAy97_-@.trf$Ha$xF?)%%adDU}.Uza)l6MT{C}Z}W3ipRm.aa/j[W6ePyP.]8B1F#Jem{,^Ddvv?n*Pd)oe5-.%cCh{Eo1A_Jb_lY5-BI@QO)G?xAw7OZL@!f6}H7*3q%6sK0Da_r;/8pt$V,(;sGp-wC,uLx_I1p=VVRJLo*$I!Poj]y,H1!Kwq}7x{7r]AkG2J5eXjx9J,)Si;HGt9$o3-);PAikgmGF#Z?o9;0aDXPdTWb?:hBy#xz+Cj,dZdfx?.L030lwc9}aUqePbz5zMPYEg#O$m}4[_7*DzX3:1JB;CK89v9}x*VT;4GC$AK:rzp-VibPY}P/Mg8yr))t^!LYFZ81#a(tV+[3-F}rjMj($*Spf5^nAe]2T=)SatW5w3S?AB03-lK5efv5:{THL?Nt6yCZp-e.pynqAHUygsBSooAf2MH*{W634GGUxMs}}i1p</mainForm_1>
+    <mainForm_1 Class="TCEForm" Encoding="Ascii85">jg!%C):Zf/lXP9$wIC*63/)L33$B2cA_aM5*}I7c-Bz@]18$I.oHnM39oY[Tx#0!4.GMYUA$Sv#G/BC!B)8FDV+mf:_2Us[G_lOsv]okDo-iKng[zK@]1E_I2V,[4;bs^vCcZ4a*k[YGN*5eyMLg-3=i!_zBS^$DeLNrnkYs2O6Dp9y6A_EOv[L{:GV1tXGY?#)4hT?G@lHm?C3i^ffC)[GDL[]/82W5;Mjb4s9n8((kjKFcFN9V{czbvRK[!3YxWBa:+VxZ!U#*0:X@Iy4QbxjRHYY@-?#vY$!e*W9+2g@IvRS{+MO%CAp5yr$9cNC*){I!lVCiE[l,AvK:ZMg85Ce6:I%;E6scXkv:^[v#TDk65rF$n=oyz;5[TC#D!cbxvi;1C@49Hpq@kW@,y?*dxgg]6.;ODckv*V6ON9[%ddg9?+$s}Xdo7b/@]7C}[SsY_Xd6@(Oy*r8Im@-yh,Xr[FUNyS[#GRVew4asb6g^}S=kHbWaq#GpCqptcO^+pZomfgn8@bsP^+D9zo(Xoi:0;26jN(S%?D.[aY%fxq4.9D#ZK}O*HHNPJeHq*!0KOM5qwz71]kSu2Upqb#XdF^FeMPgx3WazI2vY;)F{M.X=FEZD]m){6^qErW[?aB@@gbMxvuT*RHyD6d7+H,w4XKE-PUU*5w?)2FTcdhZjB1fb/tf}o;DF}pDyV{kk^dat@ZEk</mainForm_1>
   </Forms>
   <CheatEntries/>
   <UserdefinedSymbols>
     <SymbolEntry>
       <Name>bla</Name>
-      <Address>00BE0000</Address>
+      <Address>00B10000</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>cmd</Name>
-      <Address>00BE0400</Address>
+      <Address>00B10400</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arg0</Name>
-      <Address>00BE0410</Address>
+      <Address>00B10410</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arg1</Name>
-      <Address>00BE0510</Address>
+      <Address>00B10510</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>arg2</Name>
-      <Address>00BE0610</Address>
+      <Address>00B10610</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>result</Name>
-      <Address>00BE0710</Address>
+      <Address>00B10710</Address>
     </SymbolEntry>
     <SymbolEntry>
       <Name>pipename</Name>
-      <Address>00BE0720</Address>
+      <Address>00B10720</Address>
     </SymbolEntry>
   </UserdefinedSymbols>
   <LuaScript>-- Create by 51m0n
@@ -46,6 +46,7 @@ refill_interval = 500;
 
 -- #############################################################################
 ---[[
+if (type(orig_print) == "nil") then
 orig_print = print
 function   fake_print(...)
     --disable print function for the EVENTCMD_METHODUNLOAD log will take focus from the game.
@@ -57,6 +58,7 @@ function   fake_print(...)
     orig_print(...);
 end;
 print = fake_print;
+end
 --]]
 local pid = nil;
 
@@ -163,6 +165,8 @@ function FormClose(sender)
     print = orig_print;
 return caHide --Possible options: caHide, caFree, caMinimize, caNone
 end
+
+
 function SuperVillagersButtonClick(sender)
   local vclass = java_findClass("Lrtr/mobs/VillagerAdult;");
   local objs = java_findAllObjectsFromClass(vclass);
@@ -174,6 +178,15 @@ function SuperVillagersButtonClick(sender)
   local dexterity_id = get_field_id_by_field_name(base_vclass,"dexterity");
   local intelligence_id = get_field_id_by_field_name(base_vclass,"intelligence");
   local lifeExpectancy_id = get_field_id_by_field_name(base_vclass,"lifeExpectancy");
+  local maxHunger_id = get_field_id_by_field_name(base_vclass,"hungerMax");
+  local hunger_id = get_field_id_by_field_name(base_vclass,"hunger");
+  local maxthirst_id = get_field_id_by_field_name(base_vclass,"thirstMax");
+  local thirst_id = get_field_id_by_field_name(base_vclass,"thirst");
+  local hitPointsMax_id = get_field_id_by_field_name(base_vclass,"hitPointsMax");
+  local hitPoints_id = get_field_id_by_field_name(base_vclass,"hitPoints");
+  local happinessMax_id = get_field_id_by_field_name(base_vclass,"happinessMax");
+  local happiness_id = get_field_id_by_field_name(base_vclass,"happiness");
+
   for k,v in pairs(objs) do
       --print(string.format("%x",java_getField(v,0xf42,"Ljava/lang/String;")))
       --local stringp = java_getField(v,0xf42,"Ljava/lang/String;")
@@ -184,6 +197,18 @@ function SuperVillagersButtonClick(sender)
       java_setField(v,dexterity_id,"I",9999)
       java_setField(v,intelligence_id,"I",9999)
       java_setField(v,lifeExpectancy_id,"I",9999)
+
+
+      local maxHunger = java_getField(v,maxHunger_id,"I");
+      java_setField(v,hunger_id,"I",maxHunger);
+      local maxthirst = java_getField(v,maxthirst_id,"I");
+      java_setField(v,thirst_id,"I",maxthirst);
+      local hitPointsMax = java_getField(v,hitPointsMax_id,"I");
+      java_setField(v,hitPoints_id,"I",hitPointsMax);
+      local happinessMax = java_getField(v,happinessMax_id,"I");
+      java_setField(v,happiness_id,"I",happinessMax);
+
+
       java_setField(v,baseVelocity_id,"F",9999.0)
       stringp = java_getField(v,baseVelocity_id,"F")
       --print(stringp)
@@ -207,5 +232,30 @@ function SuperJobGolem
   end
 end
 --]]
+function HealVillagersButtonClick(sender)
+  local vclass = java_findClass("Lrtr/mobs/VillagerAdult;");
+  local objs = java_findAllObjectsFromClass(vclass);
+  local base_vclass = java_findClass("Lrtr/mobs/MobBase;");
+  local maxHunger_id = get_field_id_by_field_name(base_vclass,"hungerMax");
+  local hunger_id = get_field_id_by_field_name(base_vclass,"hunger");
+  local maxthirst_id = get_field_id_by_field_name(base_vclass,"thirstMax");
+  local thirst_id = get_field_id_by_field_name(base_vclass,"thirst");
+  local hitPointsMax_id = get_field_id_by_field_name(base_vclass,"hitPointsMax");
+  local hitPoints_id = get_field_id_by_field_name(base_vclass,"hitPoints");
+  local happinessMax_id = get_field_id_by_field_name(base_vclass,"happinessMax");
+  local happiness_id = get_field_id_by_field_name(base_vclass,"happiness");
+  for k,v in pairs(objs) do
+      local maxHunger = java_getField(v,maxHunger_id,"I");
+      java_setField(v,hunger_id,"I",maxHunger);
+      local maxthirst = java_getField(v,maxthirst_id,"I");
+      java_setField(v,thirst_id,"I",maxthirst);
+      local hitPointsMax = java_getField(v,hitPointsMax_id,"I");
+      java_setField(v,hitPoints_id,"I",hitPointsMax);
+      local happinessMax = java_getField(v,happinessMax_id,"I");
+      java_setField(v,happiness_id,"I",happinessMax);
+
+  end
+  --print(#objs.." Villagers healed.");
+end
 </LuaScript>
 </CheatTable>
