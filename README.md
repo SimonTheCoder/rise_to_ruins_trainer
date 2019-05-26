@@ -11,7 +11,8 @@ Feature:
 
 * GUI added.
 * Script saved as .CT file.
-* Villagers now can have super speed, super strength/dexterity/intelligence/lifeExpectancy . And never back to normal, BE CAREFUL!
+* Villagers now can have super speed, super strength/dexterity/intelligence/lifeExpectancy . And may never back to normal, BE CAREFUL!
+* Heal villagers. Full fill their hitpoint/hunger/thisty/happiness.
 
 
 
