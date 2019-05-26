@@ -1,6 +1,7 @@
 # rise_to_ruins_trainer
 
 This trainer needs Cheat Engine installed.
+You can install CE from: https://www.cheatengine.org/
 
 download binary at:
 
